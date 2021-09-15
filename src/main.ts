@@ -25,6 +25,8 @@ async function main(): Promise<void> {
     const testReporter = new TestReporter()
     await testReporter.run()
   } catch (error) {
+    console.log('Print error in the following line')
+    console.log('error.stack:\n' + error.stack)
     core.setFailed(error.message)
   }
 }
