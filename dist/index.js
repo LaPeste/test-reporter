@@ -1042,14 +1042,21 @@ class JavaJunitParser {
             filePath = src.filePath;
             line = src.line;
         }
+        else {
+            filePath = "No path available";
+            line = -1;
+        }
         return {
             path: filePath,
             line,
             details,
-            message: typeof failure === 'object' ? failure.message : undefined
+            message: typeof failure === 'object' ? failure.$.message : undefined
         };
     }
     exceptionThrowSource(stackTrace) {
+        if (stackTrace === undefined) {
+            return undefined;
+        }
         const lines = stackTrace.split(/\r?\n/);
         const re = /^at (.*)\((.*):(\d+)\)$/;
         for (const str of lines) {
@@ -2088,6 +2095,9 @@ exports.getExceptionSource = exports.DEFAULT_LOCALE = void 0;
 const path_utils_1 = __nccwpck_require__(4070);
 exports.DEFAULT_LOCALE = 'en-US';
 function getExceptionSource(stackTrace, trackedFiles, getRelativePath) {
+    if (stackTrace === undefined) {
+        return undefined;
+    }
     const lines = stackTrace.split(/\r?\n/);
     const re = /\((.*):(\d+):\d+\)$/;
     for (const str of lines) {
@@ -2140,6 +2150,9 @@ function parseIsoDate(str) {
 }
 exports.parseIsoDate = parseIsoDate;
 function getFirstNonEmptyLine(stackTrace) {
+    if (stackTrace === undefined) {
+        return undefined;
+    }
     const lines = stackTrace.split(/\r?\n/g);
     return lines.find(str => !/^\s*$/.test(str));
 }

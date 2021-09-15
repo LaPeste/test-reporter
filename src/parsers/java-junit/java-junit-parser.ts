@@ -132,17 +132,23 @@ export class JavaJunitParser implements TestParser {
     if (src) {
       filePath = src.filePath
       line = src.line
+    } else {
+      filePath = 'No path available'
+      line = -1
     }
 
     return {
       path: filePath,
       line,
       details,
-      message: typeof failure === 'object' ? failure.message : undefined
+      message: typeof failure === 'object' ? failure.$.message : undefined
     }
   }
 
   private exceptionThrowSource(stackTrace: string): {filePath: string; line: number} | undefined {
+    if (stackTrace === undefined) {
+      return undefined
+    }
     const lines = stackTrace.split(/\r?\n/)
     const re = /^at (.*)\((.*):(\d+)\)$/
 
